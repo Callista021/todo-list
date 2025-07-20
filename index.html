@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>To-Do List</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      padding: 20px;
+      background-color: #f7f7f7;
+    }
+    h2 {
+      text-align: center;
+      color: #2c3e50;
+    }
+    .input-group {
+      margin-bottom: 10px;
+    }
+    label {
+      display: block;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    input, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    textarea {
+      resize: vertical;
+    }
+    button {
+      background-color: #28a745;
+      color: white;
+      font-weight: bold;
+      margin-top: 15px;
+      cursor: pointer;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      background: white;
+      padding: 10px;
+      border-radius: 6px;
+      margin-top: 10px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+    .task-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .task-desc {
+      font-weight: bold;
+      color: #333;
+    }
+    .task-time {
+      font-size: 13px;
+      color: #555;
+    }
+    .task-note {
+      margin-top: 5px;
+      font-style: italic;
+      color: #666;
+    }
+    .done {
+      text-decoration: line-through;
+      color: gray;
+    }
+    .removeBtn {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 5px 10px;
+      margin-left: 10px;
+    }
+    .completeBtn {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 5px 10px;
+    }
+    .task-actions {
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>To-Do List </h2>
+
+<div class="input-group">
+  <label for="taskInput">Task:</label>
+  <input type="text" id="taskInput" placeholder="What do you need to do?">
+</div>
+
+<div class="input-group">
+  <label for="taskTime">Time:</label>
+  <input type="time" id="taskTime">
+</div>
+
+<div class="input-group">
+  <label for="taskNote">Note (optional):</label>
+  <textarea id="taskNote" rows="2" placeholder="Add details, location, etc."></textarea>
+</div>
+
+<button id="addTask">Add Task</button>
+
+<ul id="taskList"></ul>
+
+<script>
+  $(document).ready(function () {
+    $('#addTask').click(function () {
+      let task = $('#taskInput').val().trim();
+      let time = $('#taskTime').val();
+      let note = $('#taskNote').val().trim();
+
+      if (task === '') {
+        alert('Please enter a task description.');
+        return;
+      }
+
+      let taskHtml = `
+        <li>
+          <div class="task-header">
+            <span class="task-desc">${task}</span>
+            <span class="task-time">${time ? '🕒 ' + time : ''}</span>
+          </div>
+          ${note ? `<div class="task-note">📝 ${note}</div>` : ''}
+          <div class="task-actions">
+            <button class="completeBtn">Mark Done</button>
+            <button class="removeBtn">Delete</button>
+          </div>
+        </li>
+      `;
+
+      $('#taskList').append(taskHtml);
+
+      // Clear fields
+      $('#taskInput').val('');
+      $('#taskTime').val('');
+      $('#taskNote').val('');
+    });
+
+    // Mark as done
+    $(document).on('click', '.completeBtn', function () {
+      $(this).closest('li'
